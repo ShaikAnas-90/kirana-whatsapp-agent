@@ -7,6 +7,7 @@ const { checkStock, placeOrder, initiateReturn, approveReturn, addNewItem, inven
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public'))); // serves qr.jpeg and dashboard assets
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'dashboard.html')));
 
@@ -20,7 +21,6 @@ app.post('/api/approve', (req, res) => {
   res.json({ success: true });
 });
 
-// NEW: Add Inventory Endpoint
 app.post('/api/inventory', (req, res) => {
   const { id, name, price, stock } = req.body;
   addNewItem(id, name, price, stock);
@@ -32,10 +32,32 @@ async function callAgent(userMessage) {
   const text = (userMessage || '').trim();
   const lower = text.toLowerCase();
 
-  // 1. Dynamic Matching (Checks exact items in your current inventory)
+  // 0. Greeting -> show live menu of items
+  const greetings = ['hii', 'hi', 'hello', 'hey', 'namaste', 'menu', 'start'];
+  if (greetings.includes(lower)) {
+    const catalogKeys = Object.keys(inventory);
+    const items = catalogKeys
+      .map((key, i) => {
+        const item = inventory[key];
+        const stockLabel = item.stock === 0 ? '(Out of stock)' : `(${item.stock} left)`;
+        return `${i + 1}. ${item.name} — ₹${item.price} ${stockLabel}`;
+      })
+      .join('\n');
+    return `Namaste! 🙏 Welcome to Shree Ganesh Kirana Store.\n\nHere's what we have:\n${items}\n\nReply with the item name or number to check stock, or type "order <item>" to buy.`;
+  }
+
   const catalogKeys = Object.keys(inventory);
+
+  // 1. Number selection (e.g. user replies "2")
+  if (/^\d+$/.test(lower)) {
+    const idx = parseInt(lower, 10) - 1;
+    if (catalogKeys[idx]) return checkStock(catalogKeys[idx]);
+    return 'Please reply with a valid item number from the menu. Type "hii" to see the menu again.';
+  }
+
+  // 2. Dynamic matching against current inventory
   let matchedKey = catalogKeys.find(k => lower.includes(k.toLowerCase()));
-  
+
   // Slang aliases
   if (!matchedKey) {
     if (lower.includes('tel') || lower.includes('nune')) matchedKey = 'oil';
@@ -43,7 +65,7 @@ async function callAgent(userMessage) {
     if (lower.includes('surf')) matchedKey = 'surf excel';
   }
 
-  // 2. Intent Detection
+  // 3. Intent detection
   const isOrder = ['order', 'buy', 'chahiye', 'pack', 'bhej', 'send', 'give', 'want'].some(k => lower.includes(k)) && !lower.includes('return');
   const isReturn = ['return', 'damage', 'expired', 'kharab', 'broken', 'wapas'].some(k => lower.includes(k));
 
@@ -57,7 +79,7 @@ async function callAgent(userMessage) {
     return checkStock(matchedKey);
   }
 
-  return 'Namaste! 🙏 I am KiranaAI. You can ask me to:\n📦 Check stock (e.g. "Do you have Maggi?")\n🛍️ Order (e.g. "Send 1 Maggi")\n🔄 Return (e.g. "Return ORD-1234")';
+  return 'Namaste! 🙏 I am KiranaAI. You can ask me to:\n📦 Check stock (e.g. "Do you have Maggi?")\n🛍️ Order (e.g. "Send 1 Maggi")\n🔄 Return (e.g. "Return ORD-1234")\n\nOr just type "hii" to see the full menu.';
 }
 
 app.post('/chat', async (req, res) => {
@@ -78,4 +100,4 @@ app.post('/whatsapp', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`KiranaAI OS v2.5 Running: http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`KiranaAI OS v2.6 Running: http://localhost:${PORT}`));

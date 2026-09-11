@@ -35,7 +35,7 @@ function checkStock(itemName) {
 
 function placeOrder(itemName, qty = 1) {
   const target = itemName ? itemName.toLowerCase().trim() : lastQueriedItem;
-  const matchedKey = Object.keys(inventory).find(k => k.includes(target) || target.includes(k)) || lastQueriedItem;
+  const matchedKey = Object.keys(inventory).find(k => target.includes(k) || k.includes(target)) || lastQueriedItem;
   const item = inventory[matchedKey];
 
   if (!item || item.stock < qty) return `Sorry, we cannot fulfill this order right now due to stock shortage.`;
@@ -48,7 +48,9 @@ function placeOrder(itemName, qty = 1) {
   metrics.ordersSaved += 1;
   recentOrders.unshift({ orderId: orderNum, item: item.name, qty: qty, total: totalAmount, status: "Confirmed" });
 
-  return `✅ Order Confirmed: #${orderNum}\n🛒 ${qty}x ${item.name}\n💰 Total: ₹${totalAmount}\n⚡ Delivery in 15 mins.\n📲 Pay via UPI: kirana@upi`;
+  const qrImageUrl = "/qr.jpeg";
+
+  return `✅ Order Confirmed: #${orderNum}<br>🛒 ${qty}x ${item.name}<br>💰 Total: ₹${totalAmount.toFixed(2)}<br>⚡ Delivery in 15 mins.<br><br>📱 **Scan below to pay instantly via UPI:**<br><img src="${qrImageUrl}" width="160" alt="UPI QR Code" style="margin-top:8px; border-radius:8px;" />`;
 }
 
 function initiateReturn(orderId, reason) {
