@@ -1,133 +1,141 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KiranaAI — Merchant Operating System & Live WhatsApp Demo</title>
-  
+  <title>KiranaAI — Merchant Operating System</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#f0fdf4',
-              500: '#22c55e',
-              600: '#16a34a',
-              700: '#15803d',
-              900: '#075e54',
-              950: '#042f2c',
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', '-apple-system', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
-          }
-        }
-      }
-    }
-  </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-
   <style>
     body { font-family: 'Inter', sans-serif; }
     .tabular-nums { font-variant-numeric: tabular-nums; }
     ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-900 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col">
 
-  <!-- Header -->
-  <header class="bg-white border-b border-slate-200 px-6 py-3">
+  <!-- Top Bar -->
+  <header class="bg-white border-b border-slate-200 px-6 py-3 sticky top-0 z-30">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-brand-900 flex items-center justify-center text-white font-bold">
+        <div class="w-9 h-9 rounded-lg bg-[#075e54] flex items-center justify-center text-white font-bold text-lg shadow-sm">
           ⚡
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="font-bold text-slate-900 tracking-tight">KiranaAI OS</span>
-            <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">DeVert Demo</span>
+            <span class="font-bold text-slate-900 tracking-tight text-base">KiranaAI Merchant OS</span>
+            <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">Autonomous Retail Agent</span>
           </div>
           <p class="text-xs text-slate-500">Autonomous WhatsApp Agent & Real-time Merchant Ledger</p>
         </div>
       </div>
-      <div class="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span>Groq Llama 3.3 Connected</span>
+
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Kirana Engine Active</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
+  <!-- Dual Workspace -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- LEFT: WhatsApp Phone Simulator (5 Cols) -->
-    <div class="lg:col-span-5 bg-[#efeae2] rounded-2xl border border-slate-300 shadow-md flex flex-col h-[750px] overflow-hidden">
-      <!-- WhatsApp Header -->
+    <!-- WhatsApp Client Simulator (5 Columns) -->
+    <div class="lg:col-span-5 bg-[#efeae2] rounded-2xl border border-slate-300 shadow-lg flex flex-col h-[760px] overflow-hidden">
+      <!-- WhatsApp Brand Header -->
       <div class="bg-[#075e54] text-white px-4 py-3 flex items-center gap-3 shadow">
-        <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm">
+        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg shadow-inner">
           🏪
         </div>
         <div class="flex-1">
-          <div class="font-semibold text-sm leading-tight">Kirana Store Assistant</div>
-          <div class="text-[11px] text-emerald-200">Online | AI Automated</div>
+          <div class="font-bold text-sm leading-tight">Shree Ganesh Kirana Store</div>
+          <div class="text-[11px] text-emerald-200 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            Online | AI Automated
+          </div>
         </div>
       </div>
 
-      <!-- WhatsApp Messages Body -->
-      <div id="chat-stream" class="flex-1 p-4 overflow-y-auto space-y-3 text-sm">
-        <div class="max-w-[80%] bg-white p-2.5 rounded-lg rounded-tl-none shadow-sm text-slate-800 text-xs">
-          Namaste! 🙏 Welcome to our Kirana store. You can check stock, prices, or log a return request directly here.
+      <!-- Message History -->
+      <div id="chat-stream" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
+        <div class="max-w-[85%] bg-white p-3 rounded-xl rounded-tl-none shadow-sm text-slate-800">
+          Namaste! 🙏 Welcome to our Kirana store. You can check stock, order groceries, or file returns right here.
         </div>
       </div>
 
-      <!-- Quick Preset Suggestions -->
+      <!-- Quick Preset Demo Buttons -->
       <div class="px-3 py-2 bg-[#f0f2f5] border-t border-slate-200 flex gap-1.5 overflow-x-auto text-[11px]">
-        <button onclick="sendQuick('Do you have Maggi?')" class="whitespace-nowrap px-2.5 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-medium">
-          📦 Check Maggi
+        <button onclick="sendQuick('Maggi hai kya?')" class="whitespace-nowrap px-3 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-semibold shadow-xs">
+          📦 Maggi Query
         </button>
-        <button onclick="sendQuick('Is Parle-G available?')" class="whitespace-nowrap px-2.5 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-medium">
-          ⚠️ Out of stock test
+        <button onclick="sendQuick('1 packet Maggi bhej do')" class="whitespace-nowrap px-3 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-semibold shadow-xs">
+          🛍️ Buy Maggi
         </button>
-        <button onclick="sendQuick('Return order ORD-9901, item expired.')" class="whitespace-nowrap px-2.5 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-medium">
-          🔄 Return item
+        <button onclick="sendQuick('Parle-G available hai?')" class="whitespace-nowrap px-3 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-semibold shadow-xs">
+          ⚠️ Out of Stock
+        </button>
+        <button onclick="sendQuick('Return order ORD-9901, item expired.')" class="whitespace-nowrap px-3 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-semibold shadow-xs">
+          🔄 Return Item
         </button>
       </div>
 
-      <!-- WhatsApp Input Bar -->
+      <!-- Input Bar with Voice -->
       <form onsubmit="handleChatSubmit(event)" class="bg-[#f0f2f5] px-3 py-2.5 flex items-center gap-2 border-t border-slate-200">
-        <input type="text" id="chat-input" placeholder="Type a WhatsApp message..." autocomplete="off"
-               class="flex-1 px-3 py-2 bg-white rounded-full text-xs border border-slate-300 focus:outline-none focus:ring-1 focus:ring-brand-500">
-        <button type="submit" class="w-8 h-8 rounded-full bg-[#128c7e] hover:bg-[#075e54] text-white flex items-center justify-center text-sm shadow">
+        <button type="button" onclick="startVoice()" class="w-9 h-9 rounded-full bg-slate-300 hover:bg-slate-400 flex items-center justify-center text-sm transition shadow-inner" title="Voice Input">
+          🎤
+        </button>
+        <input type="text" id="chat-input" placeholder="Type or speak (English/Hindi/Telugu)..." autocomplete="off"
+               class="flex-1 px-4 py-2 bg-white rounded-full text-xs border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#075e54]">
+        <button type="submit" class="w-9 h-9 rounded-full bg-[#128c7e] hover:bg-[#075e54] text-white flex items-center justify-center text-sm shadow transition">
           ➤
         </button>
       </form>
     </div>
 
-    <!-- RIGHT: Merchant Real-Time Dashboard (7 Cols) -->
-    <div class="lg:col-span-7 space-y-6">
+    <!-- Merchant Real-Time OS Ledger (7 Columns) -->
+    <div class="lg:col-span-7 space-y-5">
 
-      <!-- Real-Time Inventory Table -->
+      <!-- Strategic Business Metrics -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-gradient-to-br from-emerald-600 to-[#075e54] rounded-xl p-4 text-white shadow-md">
+          <p class="text-[11px] uppercase tracking-wider font-semibold text-emerald-100">Revenue Recovered from Quick Commerce</p>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-bold tabular-nums" id="metric-revenue">₹0</span>
+            <span class="text-xs text-emerald-200">saved today</span>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+          <p class="text-[11px] uppercase tracking-wider font-semibold text-slate-500">Instant AI Orders</p>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-bold tabular-nums text-slate-800" id="metric-orders">0</span>
+            <span class="text-xs text-slate-400">processed automatically</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time Stock Status -->
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-slate-200 flex items-center justify-between">
+        <div class="px-5 py-3 border-b border-slate-200 flex items-center justify-between">
           <div>
             <h2 class="text-sm font-bold text-slate-900">📦 Live Store Inventory Ledger</h2>
-            <p class="text-[11px] text-slate-500">Updated dynamically via Groq tool-calling agent</p>
           </div>
-          <span class="text-[11px] font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">Auto-sync 2s</span>
+          <div class="flex items-center gap-3">
+            <span class="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Auto-sync 2s</span>
+            <button onclick="document.getElementById('add-modal').classList.remove('hidden')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 text-[11px] rounded font-semibold shadow transition">
+              + Add Item
+            </button>
+          </div>
         </div>
-        <div class="overflow-x-auto max-h-[300px]">
+        <div class="overflow-x-auto max-h-[160px]">
           <table class="w-full text-left text-xs" id="inv-table">
-            <thead class="bg-slate-50 text-slate-500 font-semibold uppercase border-b border-slate-200">
+            <thead class="bg-slate-50 text-slate-500 uppercase font-semibold border-b border-slate-200">
               <tr>
-                <th class="py-2.5 px-4">Item</th>
+                <th class="py-2.5 px-4">Item Name</th>
                 <th class="py-2.5 px-4">Price</th>
-                <th class="py-2.5 px-4">Stock Status</th>
+                <th class="py-2.5 px-4">Available Stock</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 font-medium"></tbody>
@@ -135,23 +143,43 @@
         </div>
       </div>
 
-      <!-- WhatsApp Return Audit Log -->
+      <!-- Live Dispatched Orders -->
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-slate-200 flex items-center justify-between">
+        <div class="px-5 py-3 border-b border-slate-200 flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-bold text-slate-900">🛍️ WhatsApp Order Dispatch Feed</h2>
+          </div>
+        </div>
+        <div class="overflow-x-auto max-h-[140px]">
+          <table class="w-full text-left text-xs" id="orders-table">
+            <thead class="bg-slate-50 text-slate-500 uppercase font-semibold border-b border-slate-200">
+              <tr>
+                <th class="py-2 px-4">Order ID</th>
+                <th class="py-2 px-4">Item</th>
+                <th class="py-2 px-4">Total</th>
+                <th class="py-2 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Returns Ledger -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-200 flex items-center justify-between">
           <div>
             <h2 class="text-sm font-bold text-slate-900">🔄 WhatsApp Return Requests</h2>
-            <p class="text-[11px] text-slate-500">Requests created automatically by AI Agent</p>
           </div>
-          <span class="text-[11px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded" id="returns-count">0 logged</span>
         </div>
-        <div class="overflow-x-auto max-h-[260px]">
+        <div class="overflow-x-auto max-h-[140px]">
           <table class="w-full text-left text-xs" id="ret-table">
-            <thead class="bg-slate-50 text-slate-500 font-semibold uppercase border-b border-slate-200">
+            <thead class="bg-slate-50 text-slate-500 uppercase font-semibold border-b border-slate-200">
               <tr>
-                <th class="py-2.5 px-4">Order ID</th>
-                <th class="py-2.5 px-4">Customer Reason</th>
-                <th class="py-2.5 px-4">Status</th>
-                <th class="py-2.5 px-4 text-right">Action</th>
+                <th class="py-2 px-4">Order ID</th>
+                <th class="py-2 px-4">Reason</th>
+                <th class="py-2 px-4">Status</th>
+                <th class="py-2 px-4 text-right">Approval</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 font-medium"></tbody>
@@ -163,13 +191,78 @@
 
   </main>
 
+  <!-- Add Item Modal -->
+  <div id="add-modal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm">
+      <h2 class="text-lg font-bold text-slate-900 mb-4">Add New Inventory Item</h2>
+      <form id="add-item-form" onsubmit="submitNewItem(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Short ID (e.g. 'sugar')</label>
+          <input type="text" id="new-id" required class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Full Display Name</label>
+          <input type="text" id="new-name" required class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Price (₹)</label>
+            <input type="number" id="new-price" required class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Initial Stock</label>
+            <input type="number" id="new-stock" required class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+          </div>
+        </div>
+        <div class="flex gap-2 mt-5">
+          <button type="button" onclick="document.getElementById('add-modal').classList.add('hidden')" class="flex-1 bg-slate-200 text-slate-700 py-2 rounded text-sm font-semibold hover:bg-slate-300 transition">Cancel</button>
+          <button type="submit" class="flex-1 bg-emerald-600 text-white py-2 rounded text-sm font-semibold hover:bg-emerald-700 transition">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
+    function playShopBell() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.35);
+      } catch(e) {}
+    }
+
+    // Trigger Native Browser Voice Recognition
+    function startVoice() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-IN'; // Captures mixed Indian languages beautifully
+      recognition.start();
+      
+      const input = document.getElementById('chat-input');
+      input.placeholder = "Listening...";
+      
+      recognition.onresult = (event) => {
+        input.value = event.results[0][0].transcript;
+        document.querySelector('form').dispatchEvent(new Event('submit'));
+      };
+      
+      recognition.onend = () => { input.placeholder = "Type or speak (English/Hindi/Telugu)..."; };
+    }
+
     async function handleChatSubmit(e) {
       e.preventDefault();
       const input = document.getElementById('chat-input');
       const text = input.value.trim();
       if (!text) return;
-      
+
       input.value = '';
       appendMessage(text, 'user');
 
@@ -181,9 +274,10 @@
         });
         const data = await res.json();
         appendMessage(data.reply, 'agent');
+        playShopBell();
         syncData();
       } catch (err) {
-        appendMessage("Unable to reach backend engine.", 'agent');
+        appendMessage("Unable to connect to Kirana engine.", 'agent');
       }
     }
 
@@ -198,10 +292,10 @@
       const msgDiv = document.createElement('div');
 
       if (role === 'user') {
-        msgDiv.className = 'max-w-[80%] bg-[#dcf8c6] ml-auto p-2.5 rounded-lg rounded-tr-none shadow-sm text-slate-800 text-xs';
+        msgDiv.className = 'max-w-[80%] bg-[#dcf8c6] ml-auto p-3 rounded-xl rounded-tr-none shadow-sm text-slate-800 text-xs';
         msgDiv.innerHTML = `<div>${text}</div><div class="text-[9px] text-slate-400 text-right mt-1">${time} ✓✓</div>`;
       } else {
-        msgDiv.className = 'max-w-[80%] bg-white p-2.5 rounded-lg rounded-tl-none shadow-sm text-slate-800 text-xs';
+        msgDiv.className = 'max-w-[85%] bg-white p-3 rounded-xl rounded-tl-none shadow-sm text-slate-800 text-xs whitespace-pre-line';
         msgDiv.innerHTML = `<div>${text}</div><div class="text-[9px] text-slate-400 text-right mt-1">${time}</div>`;
       }
 
@@ -211,55 +305,100 @@
 
     async function syncData() {
       try {
-        const invRes = await fetch('/api/inventory');
-        const inv = await invRes.json();
-        const items = Object.values(inv);
-        
-        document.querySelector('#inv-table tbody').innerHTML = items.map(item => {
-          const isOut = item.stock === 0;
-          return `
-            <tr class="hover:bg-slate-50 transition ${isOut ? 'bg-rose-50/40' : ''}">
-              <td class="py-2.5 px-4 font-semibold text-slate-800">${item.name}</td>
-              <td class="py-2.5 px-4 text-slate-600">₹${Number(item.price).toFixed(2)}</td>
-              <td class="py-2.5 px-4">
-                <span class="px-2 py-0.5 rounded text-[11px] font-semibold ${isOut ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}">
-                  ${isOut ? 'Out of Stock' : item.stock + ' units'}
+        const [invRes, ordRes, retRes, metRes] = await Promise.all([
+          fetch('/api/inventory'),
+          fetch('/api/orders'),
+          fetch('/api/returns'),
+          fetch('/api/metrics')
+        ]);
+
+        if (metRes.ok) {
+          const metrics = await metRes.json();
+          document.getElementById('metric-revenue').innerText = `₹${metrics.revenueRecovered}`;
+          document.getElementById('metric-orders').innerText = metrics.ordersSaved;
+        }
+
+        if (invRes.ok) {
+          const inv = await invRes.json();
+          document.querySelector('#inv-table tbody').innerHTML = Object.values(inv).map(item => {
+            const isOut = item.stock === 0;
+            return `
+              <tr class="hover:bg-slate-50 transition ${isOut ? 'bg-rose-50/40' : ''}">
+                <td class="py-2.5 px-4 font-semibold text-slate-800">${item.name}</td>
+                <td class="py-2.5 px-4 text-slate-600">₹${Number(item.price).toFixed(2)}</td>
+                <td class="py-2.5 px-4">
+                  <span class="px-2 py-0.5 rounded text-[11px] font-semibold ${isOut ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}">
+                    ${isOut ? 'Out of Stock' : item.stock + ' units'}
+                  </span>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+
+        if (ordRes.ok) {
+          const orders = await ordRes.json();
+          document.querySelector('#orders-table tbody').innerHTML = orders.map(o => `
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2 px-4 font-mono font-bold text-slate-800">#${o.orderId}</td>
+              <td class="py-2 px-4 text-slate-700">${o.item}</td>
+              <td class="py-2 px-4 font-semibold text-emerald-700">₹${o.total}</td>
+              <td class="py-2 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">${o.status}</span></td>
+            </tr>
+          `).join('');
+        }
+
+        if (retRes.ok) {
+          const ret = await retRes.json();
+          document.querySelector('#ret-table tbody').innerHTML = ret.map(r => `
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2 px-4 font-mono font-bold text-slate-800">#${r.orderId}</td>
+              <td class="py-2 px-4 text-slate-600">${r.reason}</td>
+              <td class="py-2 px-4">
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${r.status === 'Approved' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'}">
+                  ${r.status}
                 </span>
               </td>
+              <td class="py-2 px-4 text-right">
+                ${r.status === 'Approved'
+                  ? '<span class="text-slate-400 text-[10px]">Processed</span>'
+                  : `<button onclick="approve('${r.orderId}')" class="px-2.5 py-1 bg-emerald-600 text-white rounded text-[10px] font-semibold hover:bg-emerald-700">Approve</button>`}
+              </td>
             </tr>
-          `;
-        }).join('');
-
-        const retRes = await fetch('/api/returns');
-        const ret = await retRes.json();
-        document.getElementById('returns-count').innerText = `${ret.length} logged`;
-        document.querySelector('#ret-table tbody').innerHTML = ret.map(r => `
-          <tr class="hover:bg-slate-50 transition">
-            <td class="py-2.5 px-4 font-mono font-bold text-slate-800">#${r.orderId}</td>
-            <td class="py-2.5 px-4 text-slate-600">${r.reason}</td>
-            <td class="py-2.5 px-4">
-              <span class="px-2 py-0.5 rounded text-[11px] font-semibold ${r.status === 'Approved' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'}">
-                ${r.status}
-              </span>
-            </td>
-            <td class="py-2.5 px-4 text-right">
-              ${r.status === 'Approved' 
-                ? '<span class="text-slate-400 text-[11px]">Processed</span>'
-                : `<button onclick="approve('${r.orderId}')" class="px-2 py-1 bg-emerald-600 text-white rounded text-[10px] font-semibold hover:bg-emerald-700">Approve</button>`}
-            </td>
-          </tr>
-        `).join('');
+          `).join('');
+        }
       } catch (e) {}
     }
 
-    function approve(orderId) {
-      const rows = document.querySelectorAll('#ret-table tbody tr');
-      rows.forEach(r => {
-        if (r.innerText.includes(orderId)) {
-          r.cells[2].innerHTML = '<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-100 text-blue-800">Approved</span>';
-          r.cells[3].innerHTML = '<span class="text-slate-400 text-[11px]">Processed</span>';
-        }
+    // Backend-Persisted Approval
+    async function approve(orderId) {
+      await fetch('/api/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId })
       });
+      syncData(); // Instantly refreshes the table and deducts the revenue KPI
+    }
+    
+    // Process Add Item form submission
+    async function submitNewItem(e) {
+      e.preventDefault();
+      const payload = {
+        id: document.getElementById('new-id').value,
+        name: document.getElementById('new-name').value,
+        price: document.getElementById('new-price').value,
+        stock: document.getElementById('new-stock').value
+      };
+      
+      await fetch('/api/inventory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      document.getElementById('add-modal').classList.add('hidden');
+      document.getElementById('add-item-form').reset();
+      syncData(); // Refresh UI instantly
     }
 
     syncData();
