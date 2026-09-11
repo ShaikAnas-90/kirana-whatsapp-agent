@@ -19,6 +19,15 @@ function addNewItem(id, name, price, stock) {
   inventory[id.toLowerCase().trim()] = { name: name, price: parseFloat(price), stock: parseInt(stock) };
 }
 
+// NEW: remove an item from the store entirely
+function removeItem(id) {
+  const key = (id || '').toLowerCase().trim();
+  if (!inventory[key]) return false;
+  delete inventory[key];
+  if (lastQueriedItem === key) lastQueriedItem = Object.keys(inventory)[0] || null;
+  return true;
+}
+
 function checkStock(itemName) {
   if (!itemName) return "Namaste! Please tell me which grocery item you are looking for.";
   const query = itemName.toLowerCase().trim();
@@ -28,29 +37,67 @@ function checkStock(itemName) {
 
   lastQueriedItem = matchedKey;
   const item = inventory[matchedKey];
-  
+
   if (item.stock === 0) return `⚠️ ${item.name} is currently out of stock. Restocking soon!`;
   return `Haanji! ${item.name} is available for ₹${item.price}. Current stock: ${item.stock} units. Type "order ${matchedKey}" to buy.`;
 }
 
-function placeOrder(itemName, qty = 1) {
-  const target = itemName ? itemName.toLowerCase().trim() : lastQueriedItem;
-  const matchedKey = Object.keys(inventory).find(k => target.includes(k) || k.includes(target)) || lastQueriedItem;
-  const item = inventory[matchedKey];
+// accepts an array of { key, qty } so a single message can order multiple items
+function placeOrder(orderItems) {
+  if (!orderItems || orderItems.length === 0) {
+    return `Sorry, I couldn't understand what you'd like to order. Try "order 2 maggi and 1 oil".`;
+  }
 
-  if (!item || item.stock < qty) return `Sorry, we cannot fulfill this order right now due to stock shortage.`;
+  const problems = [];
+  const resolved = [];
 
-  item.stock -= qty;
+  for (const { key, qty } of orderItems) {
+    const item = inventory[key];
+    if (!item) {
+      problems.push(`- ${key} not found`);
+      continue;
+    }
+    if (item.stock < qty) {
+      problems.push(`- ${item.name}: only ${item.stock} left, you asked for ${qty}`);
+      continue;
+    }
+    resolved.push({ key, item, qty });
+  }
+
+  if (resolved.length === 0) {
+    return `❌ Order failed:\n${problems.join('\n')}`;
+  }
+
+  let total = 0;
+  const lines = [];
+  for (const { item, qty } of resolved) {
+    item.stock -= qty;
+    const lineTotal = item.price * qty;
+    total += lineTotal;
+    lines.push(`${qty}x ${item.name} — ₹${lineTotal.toFixed(2)}`);
+  }
+
   const orderNum = "ORD-" + Math.floor(1000 + Math.random() * 9000);
-  const totalAmount = item.price * qty;
-
-  metrics.revenueRecovered += totalAmount;
+  metrics.revenueRecovered += total;
   metrics.ordersSaved += 1;
-  recentOrders.unshift({ orderId: orderNum, item: item.name, qty: qty, total: totalAmount, status: "Confirmed" });
+  recentOrders.unshift({
+    orderId: orderNum,
+    item: resolved.map(r => `${r.qty}x ${r.item.name}`).join(', '),
+    qty: resolved.reduce((sum, r) => sum + r.qty, 0),
+    total: total,
+    status: "Confirmed"
+  });
 
   const qrImageUrl = "/qr.jpeg";
+  let reply = `✅ Order Confirmed: #${orderNum}\n🛒 ${lines.join('\n')}\n💰 Total: ₹${total.toFixed(2)}\n⚡ Delivery in 15 mins.`;
 
-  return `✅ Order Confirmed: #${orderNum}<br>🛒 ${qty}x ${item.name}<br>💰 Total: ₹${totalAmount.toFixed(2)}<br>⚡ Delivery in 15 mins.<br><br>📱 **Scan below to pay instantly via UPI:**<br><img src="${qrImageUrl}" width="160" alt="UPI QR Code" style="margin-top:8px; border-radius:8px;" />`;
+  if (problems.length > 0) {
+    reply += `\n\n⚠️ Could not add:\n${problems.join('\n')}`;
+  }
+
+  reply += `\n\n📱 **Scan below to pay instantly via UPI:**\n<img src="${qrImageUrl}" width="160" alt="UPI QR Code" style="margin-top:8px; border-radius:8px;" />`;
+
+  return reply;
 }
 
 function initiateReturn(orderId, reason) {
@@ -69,4 +116,4 @@ function approveReturn(orderId) {
   }
 }
 
-module.exports = { checkStock, placeOrder, initiateReturn, approveReturn, addNewItem, inventory, returns, recentOrders, metrics };
+module.exports = { checkStock, placeOrder, initiateReturn, approveReturn, addNewItem, removeItem, inventory, returns, recentOrders, metrics };

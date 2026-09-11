@@ -51,7 +51,7 @@
           🏪
         </div>
         <div class="flex-1">
-          <div class="font-bold text-sm leading-tight">Shree Ganesh Kirana Store</div>
+          <div class="font-bold text-sm leading-tight">Anas Bhai Kirana Store</div>
           <div class="text-[11px] text-emerald-200 flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             Online | AI Automated
@@ -68,11 +68,14 @@
 
       <!-- Quick Preset Demo Buttons -->
       <div class="px-3 py-2 bg-[#f0f2f5] border-t border-slate-200 flex gap-1.5 overflow-x-auto text-[11px]">
+        <button onclick="sendQuick('hii')" class="whitespace-nowrap px-3 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-semibold shadow-xs">
+          📋 List Items
+        </button>
         <button onclick="sendQuick('Maggi hai kya?')" class="whitespace-nowrap px-3 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-semibold shadow-xs">
           📦 Maggi Query
         </button>
-        <button onclick="sendQuick('1 packet Maggi bhej do')" class="whitespace-nowrap px-3 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-semibold shadow-xs">
-          🛍️ Buy Maggi
+        <button onclick="sendQuick('order 2 maggi and 1 oil')" class="whitespace-nowrap px-3 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-semibold shadow-xs">
+          🛍️ Multi-item Order
         </button>
         <button onclick="sendQuick('Parle-G available hai?')" class="whitespace-nowrap px-3 py-1 bg-white hover:bg-slate-100 rounded-full border border-slate-300 font-semibold shadow-xs">
           ⚠️ Out of Stock
@@ -136,6 +139,7 @@
                 <th class="py-2.5 px-4">Item Name</th>
                 <th class="py-2.5 px-4">Price</th>
                 <th class="py-2.5 px-4">Available Stock</th>
+                <th class="py-2.5 px-4 text-right">Action</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 font-medium"></tbody>
@@ -245,15 +249,15 @@
       const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.lang = 'en-IN'; // Captures mixed Indian languages beautifully
       recognition.start();
-      
+
       const input = document.getElementById('chat-input');
       input.placeholder = "Listening...";
-      
+
       recognition.onresult = (event) => {
         input.value = event.results[0][0].transcript;
         document.querySelector('form').dispatchEvent(new Event('submit'));
       };
-      
+
       recognition.onend = () => { input.placeholder = "Type or speak (English/Hindi/Telugu)..."; };
     }
 
@@ -320,7 +324,7 @@
 
         if (invRes.ok) {
           const inv = await invRes.json();
-          document.querySelector('#inv-table tbody').innerHTML = Object.values(inv).map(item => {
+          document.querySelector('#inv-table tbody').innerHTML = Object.entries(inv).map(([key, item]) => {
             const isOut = item.stock === 0;
             return `
               <tr class="hover:bg-slate-50 transition ${isOut ? 'bg-rose-50/40' : ''}">
@@ -330,6 +334,9 @@
                   <span class="px-2 py-0.5 rounded text-[11px] font-semibold ${isOut ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}">
                     ${isOut ? 'Out of Stock' : item.stock + ' units'}
                   </span>
+                </td>
+                <td class="py-2.5 px-4 text-right">
+                  <button onclick="removeItem('${key}')" class="px-2.5 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded text-[10px] font-semibold hover:bg-rose-100">Remove</button>
                 </td>
               </tr>
             `;
@@ -379,7 +386,7 @@
       });
       syncData(); // Instantly refreshes the table and deducts the revenue KPI
     }
-    
+
     // Process Add Item form submission
     async function submitNewItem(e) {
       e.preventDefault();
@@ -389,16 +396,25 @@
         price: document.getElementById('new-price').value,
         stock: document.getElementById('new-stock').value
       };
-      
+
       await fetch('/api/inventory', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      
+
       document.getElementById('add-modal').classList.add('hidden');
       document.getElementById('add-item-form').reset();
       syncData(); // Refresh UI instantly
+    }
+
+    // Remove item from inventory
+    async function removeItem(id) {
+      if (!confirm('Remove this item from the store?')) return;
+      await fetch('/api/inventory/' + encodeURIComponent(id), {
+        method: 'DELETE'
+      });
+      syncData();
     }
 
     syncData();
